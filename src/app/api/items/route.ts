@@ -9,14 +9,20 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.id) {
+      console.log('❌ Unauthorized: No session found')
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       )
     }
 
+    console.log('✅ Session found:', session.user.email)
+
     const body = await request.json()
+    console.log('📝 Request body:', body)
+    
     const validatedData = itemSchema.parse(body)
+    console.log('✅ Data validated successfully')
 
     // Convert form data to database format
     const item = await db.item.create({
@@ -32,7 +38,7 @@ export async function POST(request: NextRequest) {
         careInstructions: validatedData.careInstructions || null,
         pointsValue: validatedData.pointsValue || 0,
         tags: validatedData.tags || [],
-        images: validatedData.images,
+        images: validatedData.images?.length ? validatedData.images : ['https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400'],
         userId: session.user.id,
         status: 'AVAILABLE',
         lookingFor: validatedData.lookingFor || null,
@@ -40,9 +46,10 @@ export async function POST(request: NextRequest) {
       },
     })
 
+    console.log('✅ Item created successfully:', item.id)
     return NextResponse.json(item, { status: 201 })
   } catch (error) {
-    console.error('Error creating item:', error)
+    console.error('❌ Error creating item:', error)
     
     if (error instanceof Error && error.name === 'ZodError') {
       return NextResponse.json(

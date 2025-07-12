@@ -25,11 +25,10 @@ export const itemSchema = z.object({
   color: z.string().min(2, 'Color is required').optional(),
   material: z.string().optional(),
   careInstructions: z.string().optional(),
-  swapType: z.enum(['swap', 'points', 'both']),
   pointsValue: z.number().min(1, 'Points value must be at least 1').optional(),
   lookingFor: z.string().optional(),
   tags: z.array(z.string()).optional(),
-  images: z.array(z.string()).min(1, 'At least one image is required'),
+  images: z.array(z.string()).optional(),
 })
 
 export const swapRequestSchema = z.object({

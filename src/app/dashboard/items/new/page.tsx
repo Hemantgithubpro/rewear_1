@@ -58,11 +58,8 @@ export default function ListItemPage() {
       category: 'TOPS',
       size: 'M',
       condition: 'GOOD',
-      swapType: 'both'
     }
   })
-
-  const watchSwapType = watch('swapType')
 
   const onSubmit = async (data: ItemInput) => {
     if (!session) {
@@ -80,7 +77,7 @@ export default function ListItemPage() {
         },
         body: JSON.stringify({
           ...data,
-          images: uploadedImages,
+          images: uploadedImages.length > 0 ? uploadedImages : [],
         }),
       })
 
@@ -213,82 +210,32 @@ export default function ListItemPage() {
               <h2 className="text-xl font-semibold text-gray-900">Exchange Preferences</h2>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Exchange Type
-                </label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <label className="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      value="swap"
-                      {...register('swapType')}
-                      className="text-primary-600"
-                    />
-                    <div>
-                      <div className="font-medium">Direct Swap</div>
-                      <div className="text-sm text-gray-600">Exchange for another item</div>
-                    </div>
-                  </label>
-                  
-                  <label className="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      value="points"
-                      {...register('swapType')}
-                      className="text-primary-600"
-                    />
-                    <div>
-                      <div className="font-medium">Points Only</div>
-                      <div className="text-sm text-gray-600">Sell for points</div>
-                    </div>
-                  </label>
-                  
-                  <label className="flex items-center space-x-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      value="both"
-                      {...register('swapType')}
-                      className="text-primary-600"
-                    />
-                    <div>
-                      <div className="font-medium">Both</div>
-                      <div className="text-sm text-gray-600">Open to either option</div>
-                    </div>
-                  </label>
-                </div>
+                <Input
+                  label="Points Value"
+                  type="number"
+                  placeholder="50"
+                  {...register('pointsValue', { valueAsNumber: true })}
+                  error={errors.pointsValue?.message}
+                />
+                <p className="text-sm text-gray-600 mt-1">
+                  How many points should this item be worth?
+                </p>
               </div>
 
-              {(watchSwapType === 'points' || watchSwapType === 'both') && (
-                <div>
-                  <Input
-                    label="Points Value"
-                    type="number"
-                    placeholder="50"
-                    {...register('pointsValue', { valueAsNumber: true })}
-                    error={errors.pointsValue?.message}
-                  />
-                  <p className="text-sm text-gray-600 mt-1">
-                    How many points should this item be worth?
-                  </p>
-                </div>
-              )}
-
-              {(watchSwapType === 'swap' || watchSwapType === 'both') && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Looking For
-                  </label>
-                  <Textarea
-                    placeholder="Describe what you'd like to swap for - specific items, styles, sizes, or brands..."
-                    rows={3}
-                    {...register('lookingFor')}
-                    className={errors.lookingFor ? 'border-red-500' : ''}
-                  />
-                  {errors.lookingFor && (
-                    <p className="mt-1 text-sm text-red-600">{errors.lookingFor.message}</p>
-                  )}
-                </div>
-              )}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Looking For
+                </label>
+                <Textarea
+                  placeholder="Describe what you'd like to swap for - specific items, styles, sizes, or brands..."
+                  rows={3}
+                  {...register('lookingFor')}
+                  className={errors.lookingFor ? 'border-red-500' : ''}
+                />
+                {errors.lookingFor && (
+                  <p className="mt-1 text-sm text-red-600">{errors.lookingFor.message}</p>
+                )}
+              </div>
             </div>
 
             {/* Additional Details */}
