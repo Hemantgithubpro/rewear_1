@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         size: validatedData.size,
         condition: validatedData.condition,
         brand: validatedData.brand || null,
-        color: validatedData.color,
+        color: validatedData.color || null,
         material: validatedData.material || null,
         careInstructions: validatedData.careInstructions || null,
         pointsValue: validatedData.pointsValue || 0,
@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
         images: validatedData.images,
         userId: session.user.id,
         status: 'AVAILABLE',
-        // Additional fields that might be needed
         lookingFor: validatedData.lookingFor || null,
+        isApproved: true, // Auto-approve for now
       },
     })
 
