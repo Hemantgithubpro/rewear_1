@@ -19,12 +19,17 @@ export const itemSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters'),
   description: z.string().min(20, 'Description must be at least 20 characters'),
   category: z.enum(['TOPS', 'BOTTOMS', 'DRESSES', 'OUTERWEAR', 'ACCESSORIES', 'SHOES']),
-  type: z.string().min(2, 'Type is required'),
   size: z.enum(['XS', 'S', 'M', 'L', 'XL', 'XXL']),
   condition: z.enum(['NEW', 'EXCELLENT', 'GOOD', 'FAIR']),
+  brand: z.string().optional(),
+  color: z.string().min(2, 'Color is required').optional(),
+  material: z.string().optional(),
+  careInstructions: z.string().optional(),
+  swapType: z.enum(['swap', 'points', 'both']),
+  pointsValue: z.number().min(1, 'Points value must be at least 1').optional(),
+  lookingFor: z.string().optional(),
   tags: z.array(z.string()).optional(),
   images: z.array(z.string()).min(1, 'At least one image is required'),
-  pointsValue: z.number().min(1, 'Points value must be at least 1'),
 })
 
 export const swapRequestSchema = z.object({

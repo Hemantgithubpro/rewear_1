@@ -116,23 +116,27 @@ model VerificationToken {
 }
 
 model Item {
-    id          String     @id @default(cuid())
-    userId      String     @map("user_id")
-    title       String
-    description String     @db.Text
-    category    Category
-    type        String
-    size        Size
-    condition   Condition
-    tags        String[]
-    images      String[]
-    status      ItemStatus @default(AVAILABLE)
-    pointsValue Int        @default(10) @map("points_value")
-    isApproved  Boolean    @default(false) @map("is_approved")
-    createdAt   DateTime   @default(now()) @map("created_at")
-    updatedAt   DateTime   @updatedAt @map("updated_at")
+    id               String     @id @default(cuid())
+    userId           String     @map("user_id")
+    title            String
+    description      String     @db.Text
+    category         Category
+    size             Size
+    condition        Condition
+    brand            String?
+    color            String?
+    material         String?
+    careInstructions String?    @map("care_instructions") @db.Text
+    lookingFor       String?    @map("looking_for") @db.Text
+    tags             String[]
+    images           String[]
+    status           ItemStatus @default(AVAILABLE)
+    pointsValue      Int        @default(10) @map("points_value")
+    isApproved       Boolean    @default(false) @map("is_approved")
+    createdAt        DateTime   @default(now()) @map("created_at")
+    updatedAt        DateTime   @updatedAt @map("updated_at")
 
-    user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    owner          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     requesterSwaps Swap[] @relation("SwapRequesterItem")
     ownerSwaps     Swap[] @relation("SwapOwnerItem")
 

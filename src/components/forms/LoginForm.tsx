@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/Button'
@@ -26,17 +27,23 @@ export function LoginForm() {
     setIsLoading(true)
     
     try {
-      // TODO: Implement actual authentication
-      console.log('Login attempt:', data)
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // For now, just redirect to dashboard
-      router.push('/dashboard')
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      })
+
+      if (result?.error) {
+        setError('root', {
+          message: 'Invalid email or password. Please try again.',
+        })
+      } else {
+        router.push('/dashboard')
+        router.refresh()
+      }
     } catch (error) {
       setError('root', {
-        message: 'Invalid email or password. Please try again.',
+        message: 'An error occurred. Please try again.',
       })
     } finally {
       setIsLoading(false)
