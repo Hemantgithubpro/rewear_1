@@ -50,12 +50,12 @@ export function Header() {
             ) : (
               <>
                 <Link
-                  href="/auth/login"
+                  href="/login"
                   className="text-gray-600 hover:text-gray-900"
                 >
                   Login
                 </Link>
-                <Link href="/auth/register">
+                <Link href="/register">
                   <Button>Get Started</Button>
                 </Link>
               </>

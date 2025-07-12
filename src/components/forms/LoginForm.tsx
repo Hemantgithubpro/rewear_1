@@ -134,6 +134,19 @@ export function LoginForm() {
         </Button>
       </form>
       
+      {/* Development Credentials Helper */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
+          <h3 className="text-sm font-medium text-blue-800 mb-2">Test Credentials</h3>
+          <div className="space-y-1 text-xs text-blue-700">
+            <p><strong>Admin:</strong> admin@rewear.com / admin123</p>
+            <p><strong>User:</strong> john@example.com / password123</p>
+            <p><strong>User:</strong> jane@example.com / password123</p>
+            <p><strong>User:</strong> mike@example.com / password123</p>
+          </div>
+        </div>
+      )}
+      
       <div className="mt-6 text-center">
         <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
           ← Back to homepage
